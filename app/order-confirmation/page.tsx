@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { CheckCircle } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
 import { formatPrice } from '@/lib/utils/format'
+import { trackPaymentCompleted } from '@/lib/posthog/events'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import type { Order, OrderItem } from '@/types/supabase'
@@ -57,6 +58,18 @@ function OrderConfirmationContent() {
         if (!res.ok) throw new Error('Order not found')
         const data = await res.json()
         setOrder(data.order)
+
+        // Track payment completion + identify user
+        if (data.order) {
+          const o = data.order
+          trackPaymentCompleted({
+            order_id: o.id,
+            order_number: o.order_number,
+            total_amount: o.total_amount,
+            item_count: (o.items as { quantity: number }[]).reduce((sum: number, i: { quantity: number }) => sum + i.quantity, 0),
+            customer_email: o.customer_email,
+          })
+        }
       } catch {
         setError('Could not load order details')
       } finally {

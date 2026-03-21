@@ -10,6 +10,7 @@ import OrderSummary from '@/components/checkout/OrderSummary'
 import CheckoutForm, { type CheckoutFormData } from '@/components/checkout/CheckoutForm'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { trackCheckoutStarted, trackPaymentInitiated, trackPaymentFailed, trackCouponApplied } from '@/lib/posthog/events'
 
 declare global {
   interface Window {
@@ -56,7 +57,10 @@ export default function CheckoutPage() {
     if (isHydrated && items.length === 0) {
       router.replace('/products')
     }
-  }, [isHydrated, items.length, router])
+    if (isHydrated && items.length > 0) {
+      trackCheckoutStarted(items.reduce((sum, i) => sum + i.quantity, 0), getSubtotal())
+    }
+  }, [isHydrated, items, router, getSubtotal])
 
   // Don't render until hydrated
   if (!isHydrated) {
@@ -99,6 +103,7 @@ export default function CheckoutPage() {
         setCouponCode(data.code)
         setCouponApplied(true)
         toast.success(`Coupon applied! You save ${(data.discount / 100).toFixed(0)}`)
+        trackCouponApplied(data.code, data.discount_percent || 10)
       } else {
         toast.error(data.error || 'Invalid coupon code')
       }
@@ -212,8 +217,10 @@ export default function CheckoutPage() {
       const rzp = new window.Razorpay(options)
       rzp.on('payment.failed', () => {
         toast.error('Payment failed. Please try again.')
+        trackPaymentFailed(order_id)
         setIsLoading(false)
       })
+      trackPaymentInitiated(order_id, total)
       rzp.open()
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Something went wrong')

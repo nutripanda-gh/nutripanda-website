@@ -6,22 +6,24 @@ import Link from "next/link";
 import { useCartStore } from "@/lib/cart/store";
 import { formatPrice } from "@/lib/utils/format";
 import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { trackCartOpened, trackRemoveFromCart } from "@/lib/posthog/events";
 
 export default function CartDrawer() {
   const { items, isOpen, isHydrated, closeCart, removeItem, updateQuantity, getItemCount, getSubtotal } =
     useCartStore();
 
-  // Lock body scroll when drawer is open
+  // Lock body scroll when drawer is open + track cart opened
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      trackCartOpened(getItemCount(), getSubtotal());
     } else {
       document.body.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, getItemCount, getSubtotal]);
 
   const hydratedItems = isHydrated ? items : [];
   const itemCount = isHydrated ? getItemCount() : 0;
@@ -109,7 +111,10 @@ export default function CartDrawer() {
                         </Link>
                         <button
                           type="button"
-                          onClick={() => removeItem(item.productId)}
+                          onClick={() => {
+                            removeItem(item.productId);
+                            trackRemoveFromCart({ product_id: item.productId, product_name: item.name });
+                          }}
                           className="ml-2 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-500 transition-colors"
                           aria-label={`Remove ${item.name}`}
                         >

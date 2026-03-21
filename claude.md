@@ -10,7 +10,7 @@ E-commerce website for NutriPanda, an Indian nutrition gummies startup. 2 produc
 - **Database:** Supabase (Postgres — products, orders, customers, FAQs, testimonials, inventory logs, notification logs)
 - **Payments:** Razorpay (INR, paise-based amounts) — integrated via Next.js API routes
 - **Analytics:** PostHog
-- **Hosting:** Hostinger (nutripanda.in)
+- **Hosting:** Netlify (nutripanda.netlify.app → nutripanda.in via Hostinger domain)
 
 ## Architecture Decisions
 
@@ -53,12 +53,13 @@ components/
   layout/       # Navbar, Footer, CartDrawer
   home/         # Hero, ProductShowcase, Ingredients, FAQ, Testimonials, Contact
   products/     # ProductCard, ProductGrid, ComingSoonBadge
-  product-detail/
+  product-detail/ # ProductHero, TrackProductView (PostHog)
   checkout/
   ui/           # Button, Input, Badge, Accordion, Card, Container, SectionHeading
 lib/
   supabase/     # Browser client, admin client, queries
   razorpay/     # Utils (signature verification)
+  posthog/      # PostHog provider + event tracking helpers
   cart/         # Zustand store
   utils/        # Formatters, validators, constants
 types/          # Shared TypeScript types
@@ -86,7 +87,7 @@ Fonts:
 |-----------|-------------------------------------------------------------|--------------------------|
 | Supabase  | DB — products, orders, customers, FAQs, testimonials, logs  | `lib/supabase/`          |
 | Razorpay  | Payments — order creation, verification, webhooks           | `app/api/razorpay/`      |
-| PostHog   | Analytics — funnel events, user ID                          | Provider in layout       |
+| PostHog   | Analytics — funnel events, user ID, session replay           | `lib/posthog/`, `instrumentation-client.ts` |
 | Resend    | Email notifications                                        | `app/api/notifications/` |
 | WhatsApp  | Order updates (opt-in only)                                 | `app/api/notifications/` |
 
@@ -137,7 +138,7 @@ npm run lint     # Run ESLint
 - **Server-side data fetching** from Supabase on all public pages.
 - **Order numbers** follow format: `NP-YYYYMMDD-XXXX`.
 - **Supabase RLS:** anon can SELECT products/FAQs/testimonials and INSERT orders. Everything else requires service_role.
-- **PostHog events:** product_viewed, add_to_cart, remove_from_cart, cart_opened, checkout_started, payment_initiated, payment_completed, payment_failed.
+- **PostHog** is fully integrated. Init in `instrumentation-client.ts`, provider in `lib/posthog/provider.tsx`, event helpers in `lib/posthog/events.ts`. Events tracked: product_viewed, add_to_cart, remove_from_cart, cart_opened, checkout_started, payment_initiated, payment_completed, payment_failed, coupon_applied. Session replay + autocapture enabled. Users identified by email on payment completion.
 - Use `next/image` for all images. Product images stored as URLs in Supabase.
 - Use `generateMetadata` for dynamic SEO on product pages.
 - Touch targets: minimum 44px on all interactive elements.

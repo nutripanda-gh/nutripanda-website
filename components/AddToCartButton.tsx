@@ -3,6 +3,7 @@
 import { useCartStore } from "@/lib/cart/store";
 import type { Product } from "@/types/supabase";
 import toast from "react-hot-toast";
+import { trackAddToCart } from "@/lib/posthog/events";
 
 interface AddToCartButtonProps {
   product: Product;
@@ -18,6 +19,13 @@ export default function AddToCartButton({ product, className }: AddToCartButtonP
     addItem(product);
     openCart();
     toast.success(`${product.name} added to cart`);
+    trackAddToCart({
+      product_id: product.id,
+      product_name: product.name,
+      price: product.price,
+      quantity: 1,
+      color_theme: product.color_theme,
+    });
   }
 
   return (

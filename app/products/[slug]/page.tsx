@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ProductHero from '@/components/product-detail/ProductHero'
+import TrackProductView from '@/components/product-detail/TrackProductView'
 import { getProductBySlug, getAllProducts } from '@/lib/supabase/queries'
 import { formatPrice } from '@/lib/utils/format'
 import type { Product, Ingredient, NutritionFacts } from '@/types/supabase'
@@ -306,6 +307,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-white">
       <ProductJsonLd product={product} />
+      <TrackProductView
+        productId={product.id}
+        productName={product.name}
+        price={product.price}
+        colorTheme={product.color_theme}
+        slug={product.slug}
+      />
       <Navbar />
 
       {/* Hero: image + info + add to cart */}

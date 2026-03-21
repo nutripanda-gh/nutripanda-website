@@ -3,10 +3,11 @@
 import { Toaster } from "react-hot-toast";
 import CartDrawer from "@/components/CartDrawer";
 import CouponPopup from "@/components/CouponPopup";
+import PostHogProvider from "@/lib/posthog/provider";
 
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <PostHogProvider>
       {children}
       <CartDrawer />
       <CouponPopup />
@@ -23,6 +24,6 @@ export default function ClientProviders({ children }: { children: React.ReactNod
           },
         }}
       />
-    </>
+    </PostHogProvider>
   );
 }
