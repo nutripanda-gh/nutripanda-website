@@ -1,12 +1,16 @@
 import Image from "next/image";
 import WaitlistForm from "@/components/WaitlistForm";
 import FloatingGummies from "@/components/FloatingGummies";
+import KeywordPills, { MobileKeywordCards } from "@/components/KeywordPills";
 
 export default function Home() {
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-white">
       {/* Floating gummies */}
       <FloatingGummies />
+
+      {/* SEO keyword pills — left & right of panda */}
+      <KeywordPills />
 
       {/* Logo — pinned to top center */}
       <div className="absolute top-6 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center sm:top-8">
@@ -45,6 +49,8 @@ export default function Home() {
             @og_nutripanda
           </a>
         </p>
+
+        <MobileKeywordCards />
       </div>
 
       {/* Panda sitting at the bottom */}

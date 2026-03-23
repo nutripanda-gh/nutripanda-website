@@ -24,6 +24,7 @@
 @theme inline {
   --animate-float: float 6s ease-in-out infinite;
   --animate-glow-morph: glow-morph 6s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -75,6 +76,15 @@ h1, h2, h3, h4, h5, h6 {
   75% {
     border-radius: 45% 55% 60% 40%;
     transform: scale(1.05);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 
