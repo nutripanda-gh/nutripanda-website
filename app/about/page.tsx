@@ -98,7 +98,7 @@ export default function AboutPage() {
                     'No artificial colours, no gelatin, no high-fructose corn syrup. Just real, researched ingredients your body can use.',
                 },
                 {
-                  title: '100% Vegetarian',
+                  title: '100% Vegan',
                   description:
                     'All our gummies use pectin — a plant-based alternative to gelatin. Suitable for vegetarians and vegans.',
                 },

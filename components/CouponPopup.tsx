@@ -7,6 +7,9 @@ import { validatePhone } from '@/lib/utils/validators'
 const STORAGE_KEY = 'nutripanda-coupon-dismissed'
 
 export default function CouponPopup() {
+  // TODO: Remove this line when going live
+  return null
+
   const [isOpen, setIsOpen] = useState(false)
   const [phone, setPhone] = useState('')
   const [error, setError] = useState('')

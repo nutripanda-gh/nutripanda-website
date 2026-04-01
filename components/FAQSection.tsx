@@ -28,28 +28,38 @@ const faqs = [
     answer:
       "We offer a 30-day satisfaction guarantee. If you are not happy with your purchase, contact us within 30 days of delivery for a full refund or replacement. The product must be in its original packaging. Opened bottles are eligible for a refund if less than half the gummies have been consumed.",
   },
+  {
+    question: "How many gummies should I take per day?",
+    answer:
+      "We recommend 2 gummies per day for adults. Take them at any time — with or without food. For best results, make them part of your daily routine. Do not exceed the recommended dosage. Consult your physician if you are pregnant, nursing, or on medication.",
+  },
 ];
 
-function ChevronIcon({ open }: { open: boolean }) {
+function PlusMinusIcon({ open }: { open: boolean }) {
   return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 transition-transform duration-300 ${
-        open ? "rotate-90" : "rotate-0"
-      }`}
-    >
-      <path
-        d="M7.5 5L12.5 10L7.5 15"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#fafafa] transition-colors group-hover:bg-gray-100">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        className="text-gray-900"
+      >
+        <path
+          d="M8 3v10"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          className={`origin-center transition-transform duration-300 ${open ? "scale-y-0" : "scale-y-100"}`}
+        />
+        <path
+          d="M3 8h10"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
   );
 }
 
@@ -61,40 +71,55 @@ export default function FAQSection() {
   }
 
   return (
-    <section className="w-full bg-white py-16 md:py-24">
+    <section className="w-full bg-[#fafafa] py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-          FAQ
-        </h2>
+        {/* Heading */}
+        <div className="mb-10 text-center sm:mb-14">
+          <span className="mb-3 inline-block text-sm font-semibold tracking-widest uppercase text-[#12BC00]">
+            Got Questions?
+          </span>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Frequently Asked Questions
+          </h2>
+        </div>
 
-        <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
-          {faqs.map((faq, index) => (
-            <div key={index}>
-              <button
-                type="button"
-                onClick={() => toggle(index)}
-                className="flex w-full items-center gap-4 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12BC00] focus-visible:ring-offset-2"
-                aria-expanded={openIndex === index}
-              >
-                <ChevronIcon open={openIndex === index} />
-                <span className="text-base font-semibold text-gray-900 sm:text-lg">
-                  {faq.question}
-                </span>
-              </button>
-
+        {/* Accordion */}
+        <div className="space-y-3">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
               <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  openIndex === index
-                    ? "max-h-96 opacity-100"
-                    : "max-h-0 opacity-0"
+                key={index}
+                className={`overflow-hidden rounded-2xl border transition-colors ${
+                  isOpen
+                    ? "border-[#12BC00]/20 bg-white shadow-sm"
+                    : "border-gray-200 bg-white"
                 }`}
               >
-                <p className="pb-5 pl-9 text-sm leading-relaxed text-gray-600 sm:text-base">
-                  {faq.answer}
-                </p>
+                <button
+                  type="button"
+                  onClick={() => toggle(index)}
+                  className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12BC00] focus-visible:ring-offset-2"
+                  aria-expanded={isOpen}
+                >
+                  <span className="text-sm font-semibold text-gray-900 sm:text-base">
+                    {faq.question}
+                  </span>
+                  <PlusMinusIcon open={isOpen} />
+                </button>
+
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <p className="px-6 pb-5 text-sm leading-relaxed text-gray-500 sm:text-base">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
