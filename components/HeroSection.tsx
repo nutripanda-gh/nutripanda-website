@@ -12,7 +12,6 @@ import {
 import type { ReactNode } from "react";
 
 const TRUST_BADGES: { label: string; icon: ReactNode }[] = [
-  { label: "100% Plant-Based", icon: <PlantIcon className="h-4 w-4 text-[#12BC00]" /> },
   { label: "Sugar-Free", icon: <LeafIcon className="h-4 w-4 text-[#12BC00]" /> },
   { label: "Vegan", icon: <SproutIcon className="h-4 w-4 text-[#12BC00]" /> },
   { label: "FSSAI Compliant", icon: <ShieldCheckIcon className="h-4 w-4 text-[#12BC00]" /> },
@@ -121,13 +120,13 @@ export default function HeroSection() {
 
           {/* Subtitle */}
           <p className="mt-5 max-w-md text-base leading-relaxed text-gray-500 sm:text-lg lg:max-w-lg">
-            100% plant-based gummies that actually taste good. No sugar, no
+            Nutrition gummies that actually taste good. No sugar, no
             gelatin, no compromise.
           </p>
 
           {/* Bullet trust points — desktop only */}
           <div className="mt-6 hidden flex-wrap items-center gap-x-5 gap-y-2 lg:flex">
-            {["100% Plant-Based & Vegan", "0 Added Sugar", "FSSAI Compliant"].map(
+            {["100% Vegan", "0 Added Sugar", "FSSAI Compliant"].map(
               (point) => (
                 <div key={point} className="flex items-center gap-2">
                   <CheckIcon />
@@ -169,7 +168,7 @@ export default function HeroSection() {
 
           {/* Mobile: trust pills */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-2 lg:hidden">
-            {["Plant-Based", "Sugar-Free", "Vegan", "FSSAI"].map((tag) => (
+            {["Sugar-Free", "Vegan", "FSSAI"].map((tag) => (
               <span
                 key={tag}
                 className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-[11px] font-medium text-gray-600"

@@ -131,7 +131,7 @@ const CARD_SLOTS: { items: { label: string; icon: ReactNode }[] }[] = [
   {
     items: [
       { label: "100% Vegan", icon: icons.leaf },
-      { label: "Plant-Based", icon: icons.sprout },
+      { label: "Pectin-Based", icon: icons.sprout },
       { label: "Cruelty Free", icon: icons.heart },
       { label: "For Him & Her", icon: icons.users },
     ],

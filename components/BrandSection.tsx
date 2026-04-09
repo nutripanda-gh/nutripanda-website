@@ -8,8 +8,8 @@ const PROMISES = [
         <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
       </svg>
     ),
-    title: "100% Plant-Based",
-    desc: "Every gummy is made from natural, plant-derived ingredients. No gelatin, no animal by-products.",
+    title: "100% Vegan",
+    desc: "Every gummy uses pectin instead of gelatin. Zero animal ingredients, zero compromise.",
   },
   {
     icon: (
@@ -65,7 +65,7 @@ export default function BrandSection() {
           <p className="mt-5 text-base leading-relaxed text-gray-500 sm:text-lg">
             We started NutriPanda because we were tired of supplements that tasted bad,
             had sketchy ingredients, or made promises they couldn&apos;t keep.
-            Our gummies are made with real, plant-based ingredients — crafted in India, for India.
+            Our gummies are made with real, clean ingredients — crafted in India, for India.
           </p>
         </div>
 
