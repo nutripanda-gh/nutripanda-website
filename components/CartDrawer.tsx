@@ -62,13 +62,14 @@ export default function CartDrawer() {
 
         {/* Items */}
         {hydratedItems.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-5">
-            <ShoppingBag size={48} className="text-gray-300" />
-            <p className="text-base font-medium text-gray-500">Your cart is empty</p>
+          <div className="flex flex-1 flex-col items-center justify-center gap-3 px-5">
+            <ShoppingBag size={44} strokeWidth={1.5} className="text-gray-200" />
+            <p className="font-heading text-lg font-bold text-gray-900">Your cart is empty</p>
+            <p className="text-sm text-gray-400">Add some gummies to get started</p>
             <button
               type="button"
               onClick={closeCart}
-              className="rounded-full bg-brand-green px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              className="mt-2 rounded-full border-2 border-brand-green px-6 py-2.5 text-sm font-semibold text-brand-green transition-colors hover:bg-brand-green hover:text-white"
             >
               Continue Shopping
             </button>
@@ -167,10 +168,13 @@ export default function CartDrawer() {
               <Link
                 href="/checkout"
                 onClick={closeCart}
-                className="block w-full rounded-full bg-brand-green py-3 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="block w-full rounded-full bg-black py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-gray-900 active:bg-gray-800"
               >
                 Checkout
               </Link>
+              <p className="mt-2 text-center text-xs text-gray-400">
+                Shipping calculated at checkout
+              </p>
             </div>
           </>
         )}

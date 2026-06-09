@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# local screenshots / working artifacts
+.screenshots/
+
 # claude
 .claude/
 

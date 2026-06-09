@@ -54,10 +54,7 @@ export default function BrandSection() {
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         {/* Brand story — centered */}
         <div className="mx-auto max-w-2xl text-center">
-          <span className="mb-4 inline-block text-sm font-semibold tracking-widest uppercase text-[#12BC00]">
-            Why NutriPanda
-          </span>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Nutrition should be simple,
             <br className="hidden sm:block" />
             fun, and honest.
@@ -76,8 +73,8 @@ export default function BrandSection() {
               key={item.title}
               className="flex flex-col items-center rounded-2xl border border-gray-100 bg-[#fafafa] p-5 text-center transition-colors hover:border-gray-200 hover:bg-white sm:p-6"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#12BC00]/10 text-[#12BC00]">
-                {item.icon}
+              <div className="flex h-14 w-14 items-center justify-center text-[#12BC00]">
+                <span className="[&>svg]:h-8 [&>svg]:w-8">{item.icon}</span>
               </div>
               <h3 className="mt-4 text-sm font-bold text-gray-900 sm:text-base">
                 {item.title}
@@ -90,12 +87,12 @@ export default function BrandSection() {
         </div>
 
         {/* CTA */}
-        <div className="mt-8 flex flex-col items-center text-center sm:mt-10">
+        <div className="mt-8 flex items-center justify-center sm:mt-10">
           <Link
             href="/about"
-            className="mt-5 inline-flex items-center gap-2 rounded-full bg-black px-7 py-2.5 text-sm font-semibold text-white transition-all hover:bg-gray-800 active:scale-[0.98]"
+            className="text-sm font-medium text-gray-500 transition-colors hover:text-gray-900"
           >
-            Our Story
+            Learn more about us &rarr;
           </Link>
         </div>
       </div>

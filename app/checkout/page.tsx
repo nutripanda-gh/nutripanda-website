@@ -232,15 +232,33 @@ export default function CheckoutPage() {
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <Navbar />
-      <main className="mx-auto min-h-[60vh] max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <h1 className="text-3xl font-bold uppercase tracking-tight text-gray-900 sm:text-4xl mb-8">
-          Checkout
-        </h1>
 
-        <div className="flex flex-col-reverse gap-8 lg:flex-row lg:gap-12">
+      {/* Hero band */}
+      <section className="bg-[#f7fdf6]">
+        <div className="mx-auto max-w-7xl px-4 pt-10 pb-10 sm:px-6 sm:pt-14 sm:pb-12 lg:px-8">
+          <nav className="mb-5 text-xs text-gray-400 sm:text-sm">
+            <a href="/products" className="transition-colors hover:text-gray-600">
+              Products
+            </a>
+            <span className="mx-2">/</span>
+            <span className="text-gray-700">Checkout</span>
+          </nav>
+          <h1 className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+            Checkout
+          </h1>
+          <p className="mt-3 max-w-xl text-sm text-gray-500 sm:text-base">
+            Enter your details below. Payment is secured by Razorpay.
+          </p>
+        </div>
+      </section>
+
+      <main className="mx-auto min-h-[60vh] max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+        <div className="flex flex-col-reverse gap-8 lg:flex-row lg:items-start lg:gap-12">
           {/* Form — left on desktop, bottom on mobile */}
           <div className="flex-1 lg:max-w-[60%]">
-            <CheckoutForm onSubmit={handleCheckout} isLoading={isLoading} />
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8">
+              <CheckoutForm onSubmit={handleCheckout} isLoading={isLoading} />
+            </div>
           </div>
 
           {/* Order summary — right on desktop, top on mobile */}
@@ -254,17 +272,17 @@ export default function CheckoutPage() {
               />
 
               {/* Coupon code input */}
-              <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 sm:p-6">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">Have a coupon?</h3>
+              <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+                <h3 className="mb-3 text-sm font-semibold text-gray-900">Have a coupon?</h3>
                 {couponApplied ? (
-                  <div className="flex items-center justify-between rounded-xl bg-green-50 border border-green-200 px-4 py-3">
+                  <div className="flex items-center justify-between rounded-xl border border-[#12BC00]/30 bg-[#DCFDCC]/50 px-4 py-3">
                     <div>
-                      <span className="text-sm font-medium text-green-800">{couponCode}</span>
-                      <span className="ml-2 text-xs text-green-600">Applied</span>
+                      <span className="text-sm font-semibold text-gray-900">{couponCode}</span>
+                      <span className="ml-2 text-xs font-medium text-[#0fa600]">Applied</span>
                     </div>
                     <button
                       onClick={handleRemoveCoupon}
-                      className="text-xs font-medium text-red-500 hover:text-red-700 transition-colors"
+                      className="text-xs font-medium text-gray-500 transition-colors hover:text-gray-900"
                     >
                       Remove
                     </button>
@@ -281,12 +299,38 @@ export default function CheckoutPage() {
                     <button
                       onClick={handleApplyCoupon}
                       disabled={couponLoading || !couponInput.trim()}
-                      className="rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                      className="rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                     >
                       {couponLoading ? '...' : 'Apply'}
                     </button>
                   </div>
                 )}
+              </div>
+
+              {/* Trust strip */}
+              <div className="rounded-2xl border border-gray-200 bg-[#fafafa] p-5 sm:p-6">
+                <ul className="space-y-2.5 text-xs text-gray-600 sm:text-sm">
+                  {[
+                    'Free shipping over ₹499',
+                    '30-day satisfaction guarantee',
+                    'Secure payment via Razorpay',
+                  ].map((point) => (
+                    <li key={point} className="flex items-center gap-2.5">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="h-4 w-4 shrink-0"
+                        stroke="#12BC00"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

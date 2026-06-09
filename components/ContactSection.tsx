@@ -1,14 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-
-const GUMMIES = [
-  { className: "top-[15%] left-[5%] lg:left-[10%]", delay: "0s", duration: "6s", rotate: "-15deg" },
-  { className: "bottom-[20%] left-[3%] lg:left-[8%]", delay: "2s", duration: "7s", rotate: "25deg" },
-  { className: "top-[10%] right-[5%] lg:right-[10%]", delay: "1s", duration: "5.5s", rotate: "20deg" },
-  { className: "bottom-[15%] right-[3%] lg:right-[8%]", delay: "3s", duration: "6.5s", rotate: "-20deg" },
-];
 
 function FloatingInput({
   id,
@@ -101,53 +93,19 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-white py-16 sm:py-20">
-      {/* Floating gummies — hidden on mobile */}
-      <div className="pointer-events-none hidden sm:block">
-        {GUMMIES.map((g, i) => (
-          <div
-            key={i}
-            className={`absolute z-[1] animate-float ${g.className}`}
-            style={{ animationDelay: g.delay, animationDuration: g.duration }}
-          >
-            <div className="relative" style={{ transform: `rotate(${g.rotate})` }}>
-              <div
-                className="absolute inset-0 bg-[#12BC00] opacity-[0.12] animate-glow-morph"
-                style={{
-                  margin: "-40%",
-                  filter: "blur(50px)",
-                  animationDelay: g.delay,
-                  animationDuration: g.duration,
-                }}
-              />
-              <Image
-                src="/assets/pre-launch/green-gummy.png"
-                alt=""
-                width={80}
-                height={80}
-                className="relative opacity-70"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="w-full bg-white py-16 sm:py-20">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="mb-10 text-center sm:mb-14">
-          <span className="mb-3 inline-block text-sm font-semibold tracking-widest uppercase text-[#12BC00]">
-            Get in Touch
-          </span>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            We&apos;d Love to Hear From You
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Get in touch
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-base text-gray-500">
-            Questions, feedback, or just want to say hi? Drop us a message and
-            we&apos;ll get back to you within 24 hours.
+            Questions, feedback, or just want to say hi? We&apos;ll get back to you within 24 hours.
           </p>
         </div>
 
-        {/* Form — no wrapper card */}
+        {/* Form */}
         <form
           onSubmit={handleSubmit}
           className="mx-auto max-w-xl space-y-4"

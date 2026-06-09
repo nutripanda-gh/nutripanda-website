@@ -12,19 +12,19 @@ function formatPrice(paise: number) {
 export default function ProductCards({ products }: { products: Product[] }) {
   return (
     <section className="w-full bg-white px-4 py-16 sm:px-6 sm:py-20">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-3xl">
         {/* Section heading */}
-        <div className="mb-10 text-center sm:mb-14">
-          <span className="mb-3 inline-block text-sm font-semibold tracking-widest uppercase text-[#12BC00]">
-            Our Products
-          </span>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Shop Best Sellers
+        <div className="mb-10 flex items-end justify-between sm:mb-14">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Best Sellers
           </h2>
+          <a href="/products" className="hidden text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 sm:block">
+            View all &rarr;
+          </a>
         </div>
 
         {/* Product grid */}
-        <div className="mx-auto grid max-w-3xl grid-cols-2 gap-5 sm:gap-8">
+        <div className="grid grid-cols-2 gap-5 sm:gap-8">
           {products.map((product) => {
             const image =
               product.images?.[0] ??
@@ -58,18 +58,32 @@ export default function ProductCards({ products }: { products: Product[] }) {
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                     sizes="(max-width: 640px) 50vw, 320px"
                   />
-                  {/* Quick-add overlay on hover */}
-                  <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                  {/* Quick-add — corner button (fades in on hover, always shown on mobile) */}
+                  {product.inventory_count > 0 && (
                     <div
-                      className="mx-3 mb-3"
+                      className="absolute bottom-3 right-3 z-10"
                       onClick={(e) => e.preventDefault()}
                     >
                       <AddToCartButton
                         product={product}
-                        className="flex w-full items-center justify-center rounded-xl bg-gray-900 py-2.5 text-xs font-semibold tracking-wide uppercase text-white transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-40 sm:py-3 sm:text-sm"
-                      />
+                        ariaLabel={`Add ${product.name} to cart`}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white shadow-md transition-all duration-300 ease-out hover:bg-black active:scale-95 sm:h-11 sm:w-11 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-5 w-5"
+                        >
+                          <path d="M5 12h14" />
+                          <path d="M12 5v14" />
+                        </svg>
+                      </AddToCartButton>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Product info */}

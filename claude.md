@@ -142,6 +142,8 @@ npm run lint     # Run ESLint
 - Use `next/image` for all images. Product images stored as URLs in Supabase.
 - Use `generateMetadata` for dynamic SEO on product pages.
 - Touch targets: minimum 44px on all interactive elements.
+- **Icons inside cards/pills: never put a background behind the icon** (no filled circle, square, or tinted box). Keep the icon centered and colored to the theme — green `#12BC00` on light surfaces, white on dark/black surfaces. Applies everywhere on the site.
+- **Buttons are pill-shaped (`rounded-full`)** and have no glow/drop-shadow behind them.
 
 ## Detailed Spec
 

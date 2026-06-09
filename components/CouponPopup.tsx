@@ -88,8 +88,8 @@ export default function CouponPopup() {
 
         {isSent ? (
           <div className="text-center py-4">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12BC00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#12BC00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
@@ -134,7 +134,7 @@ export default function CouponPopup() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-xl bg-brand-green py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="w-full rounded-full bg-brand-green py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 {isLoading ? 'Sending...' : 'Send My Coupon'}
               </button>

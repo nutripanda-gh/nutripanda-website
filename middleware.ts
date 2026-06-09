@@ -1,7 +1,18 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const ALLOWED = ['/', '/api']
+const ALLOWED = [
+  '/',
+  '/api',
+  '/terms',
+  '/privacy',
+  '/shipping',
+  '/returns',
+  '/subscription',
+  '/brand-protection',
+  '/creator-terms',
+  '/grievance',
+]
 
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl

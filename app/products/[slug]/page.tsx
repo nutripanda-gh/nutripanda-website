@@ -12,15 +12,6 @@ import type { Product, Ingredient, NutritionFacts } from '@/types/supabase'
 
 // ── Color maps ──
 
-const COLOR_MAP: Record<string, string> = {
-  orange: 'border-product-orange',
-  green: 'border-product-green',
-  purple: 'border-product-purple',
-  yellow: 'border-product-yellow',
-  pink: 'border-product-pink',
-  blue: 'border-product-blue',
-}
-
 const BG_MAP: Record<string, string> = {
   orange: 'bg-product-orange',
   green: 'bg-product-green',
@@ -213,45 +204,65 @@ function TrustBadgesRow({
   )
 }
 
+const TINT_MAP: Record<string, string> = {
+  orange: 'from-orange-50 to-orange-100/40',
+  green: 'from-green-50 to-green-100/40',
+  purple: 'from-purple-50 to-purple-100/40',
+  yellow: 'from-yellow-50 to-yellow-100/40',
+  pink: 'from-pink-50 to-pink-100/40',
+  blue: 'from-blue-50 to-blue-100/40',
+}
+
 function RelatedProductCard({ product }: { product: Product }) {
-  const borderClass = COLOR_MAP[product.color_theme ?? ''] ?? 'border-gray-200'
-  const bgClass = BG_MAP[product.color_theme ?? ''] ?? 'bg-brand-green'
-  const image =
-    product.images?.[0] ?? 'https://placehold.co/600x600/f5f5f5/999?text=No+Image'
+  const url = product.images?.[0]
+  const hasImage = !!url && !url.includes('placehold.co')
+  const tint = TINT_MAP[product.color_theme ?? ''] ?? 'from-gray-50 to-gray-100/40'
+  const dot = BG_MAP[product.color_theme ?? ''] ?? 'bg-brand-green'
 
   return (
     <Link
       href={`/products/${product.slug}`}
-      className={`group block overflow-hidden rounded-2xl border-2 ${borderClass} bg-white transition-shadow hover:shadow-lg`}
+      className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-[#f3f3f3] pb-5 transition-shadow hover:shadow-md"
     >
-      <div className="relative aspect-square bg-gray-50">
-        <Image
-          src={image}
-          alt={product.name}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
+      <div className={`relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br ${tint}`}>
+        {hasImage ? (
+          <Image
+            src={url!}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <span className={`flex h-10 w-10 items-center justify-center rounded-full ${dot} text-white`}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+            </span>
+          </div>
+        )}
       </div>
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-gray-900">{product.name}</h3>
-        <p className="mt-1 text-sm text-gray-500 line-clamp-2">
-          {product.short_description}
-        </p>
-        <div className="mt-3 flex items-center gap-2">
-          <span className="text-lg font-bold text-gray-900">
+      <div className="mt-3 px-4 sm:mt-4 sm:px-5">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-900 sm:text-sm">
+          {product.name}
+        </h3>
+        {product.short_description && (
+          <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-gray-500 sm:text-xs">
+            {product.short_description}
+          </p>
+        )}
+        <div className="mt-2 flex items-baseline gap-2">
+          <span className="text-sm font-semibold text-gray-900 sm:text-base">
             {formatPrice(product.price)}
           </span>
           {product.compare_at_price && (
-            <span className="text-sm text-gray-400 line-through">
+            <span className="text-xs text-gray-400 line-through">
               {formatPrice(product.compare_at_price)}
             </span>
           )}
-        </div>
-        <div
-          className={`mt-4 w-full rounded-full ${bgClass} px-6 py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90`}
-        >
-          View Product
         </div>
       </div>
     </Link>
@@ -316,6 +327,17 @@ export default async function ProductDetailPage({ params }: PageProps) {
       />
       <Navbar />
 
+      {/* Breadcrumbs */}
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <nav className="text-xs text-gray-400 sm:text-sm">
+          <Link href="/" className="hover:text-gray-600 transition-colors">Home</Link>
+          <span className="mx-2">/</span>
+          <Link href="/products" className="hover:text-gray-600 transition-colors">Products</Link>
+          <span className="mx-2">/</span>
+          <span className="text-gray-700">{product.name}</span>
+        </nav>
+      </div>
+
       {/* Hero: image + info + add to cart */}
       <ProductHero product={product} />
 
@@ -323,7 +345,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       {product.nutrition_facts && (
         <section className="bg-white py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="mb-8 text-3xl font-bold text-gray-900 sm:text-4xl">
+            <h2 className="font-heading mb-8 text-3xl font-bold text-gray-900 sm:text-4xl">
               Nutrition Facts
             </h2>
             <NutritionFactsPanel facts={product.nutrition_facts} />
@@ -335,7 +357,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       {product.ingredients && product.ingredients.length > 0 && (
         <section className="bg-gray-50 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="mb-8 text-3xl font-bold text-gray-900 sm:text-4xl">
+            <h2 className="font-heading mb-8 text-3xl font-bold text-gray-900 sm:text-4xl">
               Key Ingredients
             </h2>
             <IngredientsSection
@@ -350,7 +372,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       {product.trust_badges && product.trust_badges.length > 0 && (
         <section className="bg-white py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 sm:text-4xl">
+            <h2 className="font-heading mb-8 text-center text-3xl font-bold text-gray-900 sm:text-4xl">
               Quality You Can Trust
             </h2>
             <TrustBadgesRow
@@ -365,8 +387,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
       {relatedProducts.length > 0 && (
         <section className="bg-gray-50 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="mb-8 text-3xl font-bold text-gray-900 sm:text-4xl">
-              You Might Also Like
+            <h2 className="font-heading mb-8 text-3xl font-bold text-gray-900 sm:text-4xl">
+              More from NutriPanda
             </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.slice(0, 3).map((p) => (

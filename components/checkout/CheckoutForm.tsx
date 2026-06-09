@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { validateEmail, validatePhone, validatePincode } from '@/lib/utils/validators'
 import { INDIAN_STATES } from '@/lib/utils/constants'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Lock } from 'lucide-react'
 
 export interface CheckoutFormData {
   name: string
@@ -81,7 +81,7 @@ export default function CheckoutForm({ onSubmit, isLoading }: CheckoutFormProps)
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-      <h2 className="text-lg font-bold text-gray-900 mb-1">Customer Details</h2>
+      <h2 className="text-lg font-bold text-gray-900 mb-3">Customer Details</h2>
 
       {/* Name */}
       <div>
@@ -135,8 +135,8 @@ export default function CheckoutForm({ onSubmit, isLoading }: CheckoutFormProps)
         <span className="text-sm text-gray-600">Send order updates on WhatsApp</span>
       </label>
 
-      <div className="pt-2">
-        <h2 className="text-lg font-bold text-gray-900 mb-1">Shipping Address</h2>
+      <div className="pt-4">
+        <h2 className="text-lg font-bold text-gray-900 mb-3">Shipping Address</h2>
       </div>
 
       {/* Address Line 1 */}
@@ -210,7 +210,7 @@ export default function CheckoutForm({ onSubmit, isLoading }: CheckoutFormProps)
       <button
         type="submit"
         disabled={isLoading}
-        className="mt-4 w-full rounded-lg bg-[#12BC00] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#0fa600] active:bg-[#0d9200] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="mt-6 w-full rounded-full bg-black px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-gray-900 active:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {isLoading ? (
           <>
@@ -218,9 +218,16 @@ export default function CheckoutForm({ onSubmit, isLoading }: CheckoutFormProps)
             Processing...
           </>
         ) : (
-          'Pay with Razorpay'
+          <>
+            <Lock size={15} />
+            Pay with Razorpay
+          </>
         )}
       </button>
+      <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-gray-400">
+        <Lock size={12} />
+        Secure checkout powered by Razorpay
+      </p>
     </form>
   )
 }

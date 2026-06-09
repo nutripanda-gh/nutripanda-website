@@ -33,8 +33,8 @@ interface BenefitItem {
   icon: ReactNode;
 }
 
-const IC = "h-4 w-4 text-[#12BC00]";
-const BC = "h-4 w-4 text-[#FF7731]";
+const IC = "h-5 w-5 text-white";
+const BC = "h-5 w-5 text-white";
 
 const INGREDIENTS: IngredientItem[] = [
   { name: "Spirulina", amount: "200mg per gummy", icon: <LeafIcon className={IC} /> },
@@ -67,12 +67,12 @@ export default function IngredientsSection() {
     <section className="w-full overflow-hidden bg-white py-16 sm:py-20">
       {/* Section heading */}
       <div className="mx-auto mb-10 max-w-2xl px-4 text-center sm:mb-14">
-        <span className="mb-3 inline-block text-sm font-semibold tracking-widest uppercase text-[#12BC00]">
-          What Goes Inside
-        </span>
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Real Ingredients. Real Results.
+        <h2 className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          What goes inside
         </h2>
+        <p className="mt-3 text-base text-gray-500">
+          Real ingredients at real doses. Nothing hidden, nothing faked.
+        </p>
       </div>
 
       {/* Row 1 — Ingredients (scrolls left) */}
@@ -86,7 +86,7 @@ export default function IngredientsSection() {
               key={`ing-${i}`}
               className="mx-2 flex shrink-0 items-center gap-3 rounded-full border border-gray-200 bg-black px-5 py-3 sm:mx-3 sm:px-6 sm:py-3.5"
             >
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10">
+              <span className="flex shrink-0 items-center justify-center">
                 {item.icon}
               </span>
               <div className="flex flex-col">
@@ -113,7 +113,7 @@ export default function IngredientsSection() {
               key={`ben-${i}`}
               className="mx-2 flex shrink-0 items-center gap-3 rounded-full border border-gray-200 bg-black px-5 py-3 sm:mx-3 sm:px-6 sm:py-3.5"
             >
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10">
+              <span className="flex shrink-0 items-center justify-center">
                 {item.icon}
               </span>
               <span className="text-sm font-semibold text-white whitespace-nowrap">

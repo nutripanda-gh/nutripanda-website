@@ -108,15 +108,9 @@ export default function TestimonialsSection({
   return (
     <section className="w-full overflow-hidden bg-white py-16 sm:py-20">
       <div className="mx-auto mb-10 max-w-2xl px-4 text-center sm:mb-14">
-        <span className="mb-3 inline-block text-sm font-semibold tracking-widest uppercase text-[#12BC00]">
-          Testimonials
-        </span>
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Loved by Thousands
+        <h2 className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          What people are saying
         </h2>
-        <p className="mt-4 text-base text-gray-500 sm:text-lg">
-          Real people. Real results. Here&apos;s what the panda fam thinks.
-        </p>
       </div>
 
       {/* Row 1 — scrolls left */}

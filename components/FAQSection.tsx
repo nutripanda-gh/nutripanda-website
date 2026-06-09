@@ -35,85 +35,48 @@ const faqs = [
   },
 ];
 
-function PlusMinusIcon({ open }: { open: boolean }) {
-  return (
-    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#fafafa] transition-colors group-hover:bg-gray-100">
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        className="text-gray-900"
-      >
-        <path
-          d="M8 3v10"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          className={`origin-center transition-transform duration-300 ${open ? "scale-y-0" : "scale-y-100"}`}
-        />
-        <path
-          d="M3 8h10"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
-    </div>
-  );
-}
-
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  function toggle(index: number) {
-    setOpenIndex((prev) => (prev === index ? null : index));
-  }
-
   return (
-    <section className="w-full bg-[#fafafa] py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+    <section id="faq" className="w-full bg-white py-20 sm:py-28">
+      <div className="mx-auto max-w-xl px-6">
         {/* Heading */}
-        <div className="mb-10 text-center sm:mb-14">
-          <span className="mb-3 inline-block text-sm font-semibold tracking-widest uppercase text-[#12BC00]">
-            Got Questions?
-          </span>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-        </div>
+        <p className="mb-8 text-center text-xs font-semibold uppercase tracking-[0.25em] text-gray-900 sm:mb-10">
+          Questions
+        </p>
 
         {/* Accordion */}
-        <div className="space-y-3">
+        <div className="space-y-0 border-t border-black/10">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
-              <div
-                key={index}
-                className={`overflow-hidden rounded-2xl border transition-colors ${
-                  isOpen
-                    ? "border-[#12BC00]/20 bg-white shadow-sm"
-                    : "border-gray-200 bg-white"
-                }`}
-              >
+              <div key={index} className="border-b border-black/10">
                 <button
                   type="button"
-                  onClick={() => toggle(index)}
-                  className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12BC00] focus-visible:ring-offset-2"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className="flex w-full items-center justify-between py-5 text-left sm:py-6"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-sm font-semibold text-gray-900 sm:text-base">
+                  <span className="pr-4 text-sm font-medium text-gray-900 sm:text-base">
                     {faq.question}
                   </span>
-                  <PlusMinusIcon open={isOpen} />
+                  <span
+                    className={`shrink-0 text-xl leading-none text-gray-400 transition-transform duration-300 ${
+                      isOpen ? "rotate-45" : "rotate-0"
+                    }`}
+                  >
+                    +
+                  </span>
                 </button>
-
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    isOpen
+                      ? "max-h-96 pb-5 opacity-100 sm:pb-6"
+                      : "max-h-0 opacity-0"
                   }`}
                 >
-                  <p className="px-6 pb-5 text-sm leading-relaxed text-gray-500 sm:text-base">
+                  <p className="text-sm leading-relaxed text-gray-500">
                     {faq.answer}
                   </p>
                 </div>

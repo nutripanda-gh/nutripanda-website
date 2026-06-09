@@ -213,9 +213,28 @@ export default function ComingSoonSections() {
       </section>
 
       {/* ━━━ Footer strip ━━━ */}
-      <div className="border-t border-black/10 py-8 text-center">
-        <p className="text-xs text-gray-400">
-          © {new Date().getFullYear()} NutriPanda · Made in India
+      <div className="border-t border-black/10 px-6 py-8 text-center">
+        <nav className="mx-auto flex max-w-2xl flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-gray-500">
+          {[
+            { href: "/terms", label: "Terms & Conditions" },
+            { href: "/privacy", label: "Privacy Policy" },
+            { href: "/shipping", label: "Shipping Policy" },
+            { href: "/returns", label: "Returns & Refunds" },
+            { href: "/brand-protection", label: "Brand Protection" },
+            { href: "/creator-terms", label: "Creator Terms" },
+            { href: "/subscription", label: "Subscription" },
+            { href: "/grievance", label: "Grievance Redressal" },
+          ].map((p, i) => (
+            <span key={p.href} className="flex items-center gap-x-3">
+              {i > 0 && <span className="text-gray-300">·</span>}
+              <a href={p.href} className="transition-colors hover:text-gray-900">
+                {p.label}
+              </a>
+            </span>
+          ))}
+        </nav>
+        <p className="mt-3 text-xs text-gray-400">
+          © {new Date().getFullYear()} Nutripanda Life Care · Made in India
         </p>
       </div>
     </div>

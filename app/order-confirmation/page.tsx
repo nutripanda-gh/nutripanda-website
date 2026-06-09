@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { CheckCircle } from 'lucide-react'
+import { Check, ShoppingBag, AlertCircle, Mail, MessageCircle } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
 import { formatPrice } from '@/lib/utils/format'
 import { trackPaymentCompleted } from '@/lib/posthog/events'
@@ -11,22 +11,24 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import type { Order, OrderItem } from '@/types/supabase'
 
+function LoadingState() {
+  return (
+    <>
+      <Navbar />
+      <main className="mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-14 w-14 animate-spin rounded-full border-4 border-gray-200 border-t-brand-green" />
+          <p className="text-sm text-gray-500">Loading your order...</p>
+        </div>
+      </main>
+      <Footer />
+    </>
+  )
+}
+
 export default function OrderConfirmationPage() {
   return (
-    <Suspense
-      fallback={
-        <>
-          <Navbar />
-          <main className="mx-auto min-h-[60vh] max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-            <div className="flex flex-col items-center justify-center space-y-4">
-              <div className="h-16 w-16 animate-spin rounded-full border-4 border-gray-200 border-t-brand-green" />
-              <p className="text-gray-500">Loading your order...</p>
-            </div>
-          </main>
-          <Footer />
-        </>
-      }
-    >
+    <Suspense fallback={<LoadingState />}>
       <OrderConfirmationContent />
     </Suspense>
   )
@@ -80,34 +82,39 @@ function OrderConfirmationContent() {
     fetchOrder()
   }, [orderId])
 
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <main className="mx-auto min-h-[60vh] max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <div className="h-16 w-16 animate-spin rounded-full border-4 border-gray-200 border-t-brand-green" />
-            <p className="text-gray-500">Loading your order...</p>
-          </div>
-        </main>
-        <Footer />
-      </>
-    )
-  }
+  if (loading) return <LoadingState />
 
   if (error || !order) {
     return (
       <>
         <Navbar />
-        <main className="mx-auto min-h-[60vh] max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <p className="text-lg text-gray-600">{error || 'Order not found'}</p>
+        <main className="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8">
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-gray-400">
+            <AlertCircle className="h-8 w-8" strokeWidth={1.5} />
+          </span>
+          <h1 className="font-heading mt-5 text-2xl font-bold text-gray-900 sm:text-3xl">
+            We couldn&apos;t find that order
+          </h1>
+          <p className="mt-3 max-w-sm text-sm text-gray-500">
+            {error === 'No order ID provided'
+              ? 'Looks like you landed here without an order reference.'
+              : 'The order you are looking for might have moved or expired. Reach out and we will help.'}
+          </p>
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
             <Link
               href="/products"
-              className="inline-block rounded-full bg-brand-green px-8 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-[#12BC00] px-8 py-3 text-sm font-semibold text-white transition-all hover:bg-[#0fa600] active:scale-[0.98]"
             >
+              <ShoppingBag size={16} />
               Continue Shopping
             </Link>
+            <a
+              href="mailto:hello@nutripanda.in"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-gray-900 px-8 py-3 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-900 hover:text-white active:scale-[0.98]"
+            >
+              <Mail size={16} />
+              Contact Support
+            </a>
           </div>
         </main>
         <Footer />
@@ -121,29 +128,35 @@ function OrderConfirmationContent() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto min-h-[60vh] max-w-3xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        {/* Success header */}
-        <div className="mb-10 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-            <CheckCircle className="h-10 w-10 text-brand-green" />
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Order Confirmed!
+
+      {/* Hero band — reward the customer */}
+      <section className="bg-[#f7fdf6]">
+        <div className="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-16 lg:px-8">
+          <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#12BC00] text-white">
+            <Check className="h-7 w-7" strokeWidth={3} />
+          </span>
+          <h1 className="font-heading mt-5 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+            Thank you, {order.customer_name.split(' ')[0]}!
           </h1>
-          <p className="mt-2 text-gray-500">
-            Thank you for your order, {order.customer_name}
+          <p className="mt-3 text-base text-gray-500 sm:text-lg">
+            Your order is confirmed. We&apos;re packing it with love.
           </p>
-        </div>
 
-        {/* Order number */}
-        <div className="mb-8 rounded-2xl bg-green-50 border border-green-200 p-5 text-center">
-          <p className="text-sm text-green-700">Order Number</p>
-          <p className="mt-1 text-xl font-bold text-green-900">{order.order_number}</p>
+          <div className="mx-auto mt-6 inline-flex flex-col items-center gap-1 rounded-2xl bg-white px-6 py-3 shadow-sm ring-1 ring-gray-200 sm:flex-row sm:gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+              Order
+            </span>
+            <span className="font-heading text-base font-bold text-gray-900">
+              {order.order_number}
+            </span>
+          </div>
         </div>
+      </section>
 
+      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         {/* Order items */}
-        <div className="mb-8 rounded-2xl border border-gray-200 bg-white overflow-hidden">
-          <div className="border-b border-gray-100 bg-gray-50 px-5 py-3">
+        <div className="mb-8 overflow-hidden rounded-2xl border border-gray-200 bg-white">
+          <div className="border-b border-gray-100 bg-[#fafafa] px-5 py-3">
             <h2 className="text-sm font-semibold text-gray-900">Order Summary</h2>
           </div>
           <div className="divide-y divide-gray-100">
@@ -159,17 +172,19 @@ function OrderConfirmationContent() {
               </div>
             ))}
           </div>
-          <div className="border-t border-gray-200 bg-gray-50 px-5 py-4 space-y-1">
+          <div className="space-y-1.5 border-t border-gray-200 bg-[#fafafa] px-5 py-4">
             <div className="flex justify-between text-sm text-gray-600">
               <span>Subtotal</span>
               <span>{formatPrice(order.subtotal)}</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600">
               <span>Shipping</span>
-              <span>{order.shipping_cost === 0 ? 'Free' : formatPrice(order.shipping_cost)}</span>
+              <span className="font-medium text-brand-green">
+                {order.shipping_cost === 0 ? 'Free' : formatPrice(order.shipping_cost)}
+              </span>
             </div>
             {order.discount > 0 && (
-              <div className="flex justify-between text-sm text-green-600">
+              <div className="flex justify-between text-sm text-brand-green">
                 <span>Discount</span>
                 <span>-{formatPrice(order.discount)}</span>
               </div>
@@ -182,32 +197,57 @@ function OrderConfirmationContent() {
         </div>
 
         {/* Shipping details */}
-        <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-5">
+        <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
           <h2 className="mb-3 text-sm font-semibold text-gray-900">Shipping To</h2>
-          <p className="text-gray-700">{order.customer_name}</p>
-          <p className="text-sm text-gray-500">
+          <p className="font-medium text-gray-900">{order.customer_name}</p>
+          <p className="mt-1 text-sm text-gray-500">
             {[address.line1, address.line2, address.city, address.state, address.pincode]
               .filter(Boolean)
               .join(', ')}
           </p>
-          <p className="mt-2 text-sm text-gray-500">{order.customer_email}</p>
+          <p className="mt-3 text-sm text-gray-500">{order.customer_email}</p>
           <p className="text-sm text-gray-500">{order.customer_phone}</p>
         </div>
 
-        {/* Notification info */}
-        <div className="mb-10 text-center text-sm text-gray-500 space-y-1">
-          <p>You&apos;ll receive a confirmation email shortly.</p>
-          {order.customer_whatsapp_opted_in && (
-            <p>You&apos;ll also receive updates on WhatsApp.</p>
-          )}
+        {/* What happens next */}
+        <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="flex items-start gap-3 rounded-2xl border border-gray-100 bg-[#fafafa] p-5">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center text-[#12BC00]">
+              <Mail className="h-5 w-5" strokeWidth={1.75} />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-gray-900">Email confirmation</p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-500">
+                A receipt is on its way to {order.customer_email}.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 rounded-2xl border border-gray-100 bg-[#fafafa] p-5">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center text-[#12BC00]">
+              <MessageCircle className="h-5 w-5" strokeWidth={1.75} />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-gray-900">
+                {order.customer_whatsapp_opted_in
+                  ? 'WhatsApp updates on'
+                  : 'Tracking updates'}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-500">
+                {order.customer_whatsapp_opted_in
+                  ? 'We will ping you on WhatsApp as your order ships.'
+                  : 'Watch your inbox — we will share tracking once it ships.'}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* CTA */}
-        <div className="text-center">
+        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
             href="/products"
-            className="inline-block rounded-full bg-brand-green px-10 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-full bg-[#12BC00] px-10 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#0fa600] active:scale-[0.98]"
           >
+            <ShoppingBag size={16} />
             Continue Shopping
           </Link>
         </div>
